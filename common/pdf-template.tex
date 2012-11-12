@@ -1,92 +1,134 @@
-\documentclass{book}
+\documentclass[10pt,twoside]{book}
+\usepackage[footskip=0.22in, outer=0.5in, inner=0.78in, top=0.5in, bottom=0.5in, paperwidth=6in, paperheight=8in]{geometry}
+%footskip is the distance between the text and the footer (in this case, page number) - so to get it to be 0.28in away from the page edge, make footskip 0.22in (+0.28 = 0.5)
 
+\usepackage[compact]{titlesec}
+%\titlespacing*{command}{left}{beforesep}{aftersep}[right]
+\titlespacing{\subsection}{0in}{0pt}{-11pt} %aftersep should be negative parskip length so there's no space
 
 % Fonts and typography
-
-%% Typography
 \usepackage[no-math]{fontspec}
 \defaultfontfeatures{Mapping = tex-text, Scale = MatchLowercase}
 
-%% Fonts
-\setmainfont{Verdana}
-\setsansfont{Verdana}
-\setmonofont{Consolas}
+\usepackage{xcolor}
+\usepackage{color}
+\definecolor{bookgray}{RGB}{77,86,91}
 
-%% Set Sans font in headings
-\usepackage{sectsty}
-\allsectionsfont{\sffamily}
+%% Fonts
+\setmainfont[Color=bookgray]{Metric-Regular}
+\setsansfont[Color=bookgray]{Metric-Regular}
+\setmonofont[Color=bookgray]{Consolas}
 
 %% Set polyglossia language
 \usepackage{polyglossia}
 \setdefaultlanguage{english}
 
+%% Set footers the way we want them
+\usepackage{fancyhdr}
+\fancyhf{} % clear all header and footers
+\renewcommand{\headrulewidth}{0pt} % remove the header rule
+\fancyfoot[RO,LE]{\thepage} %footers on left and right bottom -alternatively use RO,LE
+\pagestyle{fancy}
 
-% Page
-
-%% Use full page in book style
-\usepackage{fullpage}
+%% Disable paragraph indentation and set spacing between paragraphs
+\usepackage{parskip}
+%\parskip 0.17in
+\setlength{\parskip}{11pt} %72 points in an inch, we want about 0.72 in so 12.24 pt
 
 %% Set line spacing
-\usepackage{setspace}
-\setstretch{1.2}
+\setlength{\baselineskip}{10pt}
 
-%% Disable paragraph indentation
-\usepackage{parskip}
+%% Set up macro for formatting chapter numbers and chapter titles
+\newcommand{\usetitlenumber}[2]
+{
+\clearpage
+\vspace*{1in}
 
-%% Start sections from new page
-\let\stdsection\section
-\renewcommand\section{\newpage\stdsection}
+\fontspec[Color=bookgray]{Azuza-Bold}
+\fontsize{20pt}{20pt}
+\bf
+\selectfont
+#1. 
+\fontspec[Color=bookgray]{Metric-Regular}
+\fontsize{16pt}{16pt}
+\bf
+\selectfont
+#2
+\vspace*{0.25in}
+\restoredefaults
+\setlength{\parindent}{0in}
+\\
+}
 
+%% Set up macro for formatting chapter titles alone
+\newcommand{\usetitlechapter}[1]
+{
+\clearpage
+\vspace*{1in}
 
-% Colors
+\fontspec[Color=bookgray]{Metric-Regular}
+\fontsize{16pt}{16pt}
+\bf
+\selectfont
+#1
+\vspace*{0.25in}
+\restoredefaults
+\setlength{\parindent}{0in}
+\\
+}
 
-\usepackage{xcolor}
+%% Command to restore defaults after special formatting
+\newcommand{\restoredefaults}[0]
+{
+\fontspec[Color=bookgray]{Metric-Regular}
+\fontsize{10pt}{12pt}
+\rm
+\selectfont 
+}
 
 %% Tango color scheme
 \definecolor{SkyBlue}{HTML}{3465A4}
 \definecolor{DarkSkyBlue}{HTML}{204A87}
-
 \definecolor{Plum}{HTML}{75507B}
-
 \definecolor{ScarletRed}{HTML}{CC0000}
-
 \definecolor{Aluminium1}{HTML}{EEEEEC}
 \definecolor{Aluminium6}{HTML}{2e3436}
-
 \definecolor{Black}{HTML}{000000}
 
-
 % Listings
-
 \usepackage{listings}
 
-\lstdefinelanguage{JavaScript}{
-  keywords = {typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
-  keywordstyle = \color{SkyBlue}\bfseries,
-  ndkeywords = {class, export, boolean, throw, implements, import, this},
-  ndkeywordstyle = \color{Aluminium6}\bfseries,
-  identifierstyle = \color{Black},
-  sensitive = false,
-  comment = [l]{//},
-  morecomment = [s]{/*}{*/},
-  commentstyle = \color{Plum}\ttfamily,
-  stringstyle = \color{ScarletRed}\ttfamily,
-  morestring = [b]',
-  morestring = [b]"
-}
-
+% Sets the appearance of the code frames
 \lstset{
-  language = JavaScript,
   backgroundcolor = \color{Aluminium1},
-  extendedchars = true,
-  basicstyle = \normalsize\ttfamily,
+  basicstyle=\fontsize{9pt}{9pt}\color{bookgray}\ttfamily,
   showstringspaces = false,
   showspaces = false,
   tabsize = 1,
   breaklines = true,
-  showtabs = false
+  breakatwhitespace = true,
+  showtabs = false,
+  %resetmargins=true,
+  rulesep=0in,
+  %xleftmargin=0in,
+  %xrightmargin=0in,
+  frame=single,
+  rulecolor=\color{Aluminium1},
+  breakindent=0pt,
+  framesep=0pt,
+  framextopmargin=0.12in,
+  framexbottommargin=0.12in,
+  %framexleftmargin=0.125in,
+  %framexrightmargin=0.125in,
+  aboveskip=0.11in,
+  belowskip=-0.12in  %parskip is 12pt (0.17in). we want to eliminate parskip and add aboveskip space below
 }
 
+%make float placement more flexible
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\floatpagefraction}{0.9}
 
 % Links
 
@@ -103,7 +145,6 @@
 %% Don’t use Mono font for URLs
 \urlstyle{same}
 
-
 % Pandoc hacks
 
 %% Normal enumerates processing
@@ -111,7 +152,6 @@
 
 %% Disable section numbers
 \setcounter{secnumdepth}{0}
-
 
 \begin{document}
 
@@ -124,11 +164,12 @@
       \includegraphics[width=0.7\textwidth]{title}
     \end{center}
   \vspace*{\fill}
-
-  \setcounter{page}{0}
+  \clearpage
+  \setcounter{page}{1}
+  \frenchspacing %single space between sentences
 
   % Book contents
-
+  \restoredefaults
   $body$
 
 \end{document}
